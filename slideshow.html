@@ -1,0 +1,130 @@
+<html>
+
+<head>
+
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-script-Type" content="text/javascript">
+<title>スライドショー</title>
+
+
+<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+var windowName = "view";
+
+
+$(function() {
+
+
+  var url;
+  var urlIndex;
+  var inlineScript = "document.body.style.transform = 'scale(3)'";
+
+  var win;
+
+  $( "#nextImage" ).mousedown(function() {
+
+    var element;
+    element = win.document.getElementById("imageView");
+
+    element.setAttribute("src", url[urlIndex++]);
+
+
+  });
+
+
+
+  $("#start").click(function() {
+
+  
+    var basePageUrl
+    var childWindow;
+
+
+    var str = $("#SourceCode").val();
+		var pattern = /\/th.[^}]*?"/g;
+		url = str.match(pattern);
+
+    basePageUrl = $("#BasePageUrlForm").val();
+
+
+    var url_tmp, url_tmp2;
+    var i;
+
+		for (i = 0; i < url.length; i++) {
+			url_tmp = url[i].substr(0, url[i].length - 1);
+
+      url_tmp2 = url_tmp.replace(/&lt;/g, '<') .replace(/&gt;/g, '>') .replace(/&quot;/g, '"') .replace(/&#039;/g, '\'') .replace(/&#044;/g, ',') .replace(/&amp;/g, '&');
+      
+      url[i] = "https://www.bing.com" + url_tmp2;
+
+      console.log(url[i]);
+
+
+    }
+
+
+//		win = window.open("./slideshow_base_window.html", windowName, 'width=600,height=1000,onclick="' + inlineScript + '"');
+		win = window.open("./slideshow_base_window.html", windowName, ' onclick="' + inlineScript + '"');
+
+    urlIndex = 1;
+
+
+    setInterval(function(){
+      $( "#nextImage" ).mousedown();
+    },5000);
+
+    $.each(url,function(i,val){
+      console.log(url);
+
+      return (true);
+    });
+
+  });
+
+
+	$("#SourceCode").click(function() {
+
+  });
+
+
+	$("#BasePageUrlForm").click(function() {
+
+	});
+
+});
+
+</script>
+
+
+</head>
+
+<body  color="#EEE">
+
+
+<textarea id="SourceCode">
+</textarea>
+
+<textarea id="BasePageUrlForm">
+</textarea>
+
+<div id="start" >start</div>
+
+<div id="" width="1000" height="300">----</div>
+
+<div id="nextImage" >next</div>
+
+<div id="" width="1000" height="300">----</div>
+
+<div id="dummy" >aaa</div>
+
+<img id="imageView" style="height:1000px;max-height:"1000px";" /> 
+ 
+</body>
+</html>
