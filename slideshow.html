@@ -48,30 +48,55 @@ $(function() {
 
 
     var str = $("#SourceCode").val();
-		var pattern = /\/th.[^}]*?"/g;
+		var pattern = /\/th.id\=[^}]*?"/g;
 		url = str.match(pattern);
 
     basePageUrl = $("#BasePageUrlForm").val();
 
 
-    var url_tmp, url_tmp2;
+    var url_tmp, url_tmp2, url_tmp3;
     var i;
+
+    var width, height, wh_tmp;
+    var width_arr, height_arr;
+    var size = 1000;
+    var width_c, height_c;
+
+
 
 		for (i = 0; i < url.length; i++) {
 			url_tmp = url[i].substr(0, url[i].length - 1);
 
       url_tmp2 = url_tmp.replace(/&lt;/g, '<') .replace(/&gt;/g, '>') .replace(/&quot;/g, '"') .replace(/&#039;/g, '\'') .replace(/&#044;/g, ',') .replace(/&amp;/g, '&');
-      
-      url[i] = "https://www.bing.com" + url_tmp2;
+     
+  		pattern = /\&w\=[0-9]+/g;
+	  	wh_tmp = url_tmp2.match(pattern);
+  		pattern = /[0-9]+/g;
+	  	width_arr = wh_tmp[0].match(pattern);
+      width = width_arr[0];
 
+  		pattern = /\&h\=[0-9]+/g;
+	  	wh_tmp = url_tmp2.match(pattern);
+  		pattern = /[0-9]+/g;
+	  	height_arr = wh_tmp[0].match(pattern);
+      height = height_arr[0];
+
+      height_c = size.toString();
+      width_c = (size * (width / height)).toString();
+
+      url_tmp3 = url_tmp2.replace(/\&w\=[0-9]+/g, '&w=' + width_c).replace(/\&h\=[0-9]+/g, '&h=' + height_c)
+ 
+      url[i] = "https://www.bing.com" + url_tmp3;
+
+      console.log(i);
       console.log(url[i]);
 
 
     }
 
 
-//		win = window.open("./slideshow_base_window.html", windowName, 'width=600,height=1000,onclick="' + inlineScript + '"');
-		win = window.open("./slideshow_base_window.html", windowName, ' onclick="' + inlineScript + '"');
+		win = window.open("./slideshow_base_window.html", windowName, 'width=' + size.toString() + ',height=' + size.toString() + ',onclick="' + inlineScript + '"');
+//		win = window.open("./slideshow_base_window.html", windowName, ' onclick="' + inlineScript + '"');
 
     urlIndex = 1;
 
